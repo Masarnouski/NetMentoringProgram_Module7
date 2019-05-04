@@ -1,0 +1,33 @@
+use BooksDatabase
+db.BooksCollection.insertMany([
+   {   name: "Hobbit", author:"Tolkien", count:5 , genre: ["fantasy"], year : "2014" },
+   {   name: "Lord of the rings", author:"Tolkien", count:3 , genre: ["fantasy"], year : "2015" },
+   {   name: "Kolobok", count:10 , genre: ["kids"], year : "2000" },
+   {   name: "Repka", count:11 , genre: ["kids"], year : "2000" },
+   {   name: "Dyadya Stiopa", author:"Mihalkov", count:1 , genre: ["kids"], year : "2001" },
+])
+
+2. Найдите книги с количеством экземпляров больше единицы.       
+            
+             a. Покажите в результате только название книги.
+db.BooksCollection.find({count:{$gt:1} }, { name:1, _id:0 } )
+             b. Отсортируйте книги по названию.
+db.BooksCollection.find({count:{$gt:1} }, { name:1, _id:0 } ).sort({ name:1 })
+             c. Ограничьте количество возвращаемых книг тремя.
+db.BooksCollection.find({count:{$gt:1} }).limit(3)
+             d. Подсчитайте количество таких книг.
+db.BooksCollection.find({count:{$gt:1} }).count()
+
+3.Найдите книгу с макимальным/минимальным количеством (count).
+ db.BooksCollection.find().sort(count:1).limit(1)
+ db.BooksCollection.find().sort(count:-1).limit(1)
+
+4.Найдите список авторов (каждый автор должен быть в списке один раз).
+db.BooksCollection.distinct("author");
+
+5. Выберите книги без авторов.
+db.BooksCollection.find({author:null})
+
+6. Увеличьте количество экземпляров каждой книги на единицу.
+db.BooksCollection.updateMany({},{ $inc:{ "count":1 }} )
+db.BooksCollection.updateMany({genre:{$elemMatch: {$eq: "fantasy", $ne: "favority"}}},{$push:{ genre:"favority"}})
