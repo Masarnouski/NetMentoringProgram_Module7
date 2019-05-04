@@ -30,4 +30,12 @@ db.BooksCollection.find({author:null})
 
 6. Увеличьте количество экземпляров каждой книги на единицу.
 db.BooksCollection.updateMany({},{ $inc:{ "count":1 }} )
+
+7. Добавьте дополнительный жанр “favority” всем книгам с жанром “fantasy” (последующие запуски запроса не должны дублировать жанр “favority”).
 db.BooksCollection.updateMany({genre:{$elemMatch: {$eq: "fantasy", $ne: "favority"}}},{$push:{ genre:"favority"}})
+
+8. Удалите книги с количеством экземпляров меньше трех.
+db.BooksCollection.deleteMany({count:{$lt:3}})
+
+9. Удалите все книги.
+db.BooksCollection.deleteMany({})
